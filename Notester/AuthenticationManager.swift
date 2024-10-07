@@ -9,6 +9,8 @@ class AuthenticationManager: ObservableObject {
     
     static let shared = AuthenticationManager()
     
+    private let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
+    
     private init() {
         print("AuthenticationManager initializing...")
         checkSignInStatus()
@@ -24,6 +26,7 @@ class AuthenticationManager: ObservableObject {
                         print("Sign-in restored for user: \(user.profile?.email ?? "Unknown")")
                         self?.isSignedIn = true
                         self?.userEmail = user.profile?.email
+                        self?.userDefaults?.set(user.profile?.email, forKey: "UserEmail")
                     } else if let error = error {
                         print("Failed to restore sign-in: \(error.localizedDescription)")
                         self?.errorMessage = "Failed to restore sign-in: \(error.localizedDescription)"
@@ -61,6 +64,7 @@ class AuthenticationManager: ObservableObject {
             print("User signed in: \(user.profile?.email ?? "Unknown")")
             self.isSignedIn = true
             self.userEmail = user.profile?.email
+            self.userDefaults?.set(user.profile?.email, forKey: "UserEmail")
         }
     }
     
@@ -68,5 +72,6 @@ class AuthenticationManager: ObservableObject {
         GIDSignIn.sharedInstance.signOut()
         isSignedIn = false
         userEmail = nil
+        userDefaults?.removeObject(forKey: "UserEmail")
     }
 }

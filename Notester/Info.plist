@@ -6,11 +6,11 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.mconsultants.Notester</string>
+			<string>group.com.mconsultants.Notester</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-			      <string>com.googleusercontent.apps.65296067042-jddvmapqk97lpdao82mfm11m6kifr7ja</string>
-</array>
+				<string>com.googleusercontent.apps.65296067042-jddvmapqk97lpdao82mfm11m6kifr7ja</string>
+			</array>
 		</dict>
 	</array>
 	<key>GIDClientID</key>

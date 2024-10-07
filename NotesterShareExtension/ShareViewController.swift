@@ -8,30 +8,23 @@
 import UIKit
 import Social
 import UniformTypeIdentifiers
-import GoogleSignIn
 
 class ShareViewController: UIViewController {
+    let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // First, check if the user is signed in
-        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
-            GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
-                if let user = user {
-                    // User is signed in, proceed with sharing
-                    self?.handleSharedContent(for: user.profile?.email)
-                } else {
-                    // User is not signed in, we can't save the note
-                    self?.showSignInRequiredAlert()
-                }
-            }
+        if let userEmail = userDefaults?.string(forKey: "UserEmail") {
+            // User is signed in, proceed with sharing
+            handleSharedContent(for: userEmail)
         } else {
-            // User has never signed in, we can't save the note
+            // User is not signed in, we can't save the note
             showSignInRequiredAlert()
         }
     }
     
-    func handleSharedContent(for userEmail: String?) {
+    func handleSharedContent(for userEmail: String) {
         guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
               let itemProvider = extensionItem.attachments?.first else {
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
@@ -78,7 +71,7 @@ class ShareViewController: UIViewController {
         return string.removingPercentEncoding ?? string
     }
     
-    func saveNote(_ text: String, for userEmail: String?) {
+    func saveNote(_ text: String, for userEmail: String) {
         let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
         let key = "SavedNotes-\(userEmail ?? "")"
         var savedNotes = userDefaults?.array(forKey: key) as? [[String: Any]] ?? []
