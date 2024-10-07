@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSExtensionActivationSupported</key>
+	<string>NSExtensionActivationSupportsText
+</string>
+<key>NSExtensionAttributes</key>
+<dict>
+    <key>NSExtensionActivationRule</key>
+    <dict>
+        <key>NSExtensionActivationSupportsText</key>
+        <true/>
+        <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
+        <integer>1</integer>
+    </dict>
+</dict>
+<key>NSExtensionMainStoryboard</key>
+<string>MainInterface</string>
+<key>NSExtensionPointIdentifier</key>
+<string>com.apple.share-services</string>
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>com.googleusercontent.apps.65296067042-7mi6fcoch7onlalft08q01nvcs9scrdh</string>
+    </array>
+  </dict>
+</array>
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>notester</string>
+        </array>
+        <key>CFBundleURLName</key>
+        <string>com.mconsultants.Notester</string>
+    </dict>
+</array>
+</dict>
+</plist>

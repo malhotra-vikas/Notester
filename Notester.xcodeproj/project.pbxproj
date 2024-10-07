@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1D750CF22CB43D2D00CC5590 /* NotesterShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		1D750D052CB4610300CC5590 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D042CB4610300CC5590 /* GoogleSignIn */; };
+		1D750D072CB4610300CC5590 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D062CB4610300CC5590 /* GoogleSignInSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		1D750CC82CB4379800CC5590 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +27,59 @@
 			remoteGlobalIDString = 1D750CB52CB4379600CC5590;
 			remoteInfo = Notester;
 		};
+		1D750CF02CB43D2D00CC5590 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D750CAE2CB4379600CC5590 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D750CE72CB43D2D00CC5590;
+			remoteInfo = NotesterShareExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1D750CF72CB43D2D00CC5590 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1D750CF22CB43D2D00CC5590 /* NotesterShareExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1D750CB62CB4379600CC5590 /* Notester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D750CC72CB4379800CC5590 /* NotesterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D750CD12CB4379800CC5590 /* NotesterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotesterShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1D750CF32CB43D2D00CC5590 /* Exceptions for "NotesterShareExtension" folder in "NotesterShareExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1D750CE72CB43D2D00CC5590 /* NotesterShareExtension */;
+		};
+		1D750CF92CB45D0500CC5590 /* Exceptions for "Notester" folder in "Notester" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1D750CB52CB4379600CC5590 /* Notester */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1D750CB82CB4379600CC5590 /* Notester */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1D750CF92CB45D0500CC5590 /* Exceptions for "Notester" folder in "Notester" target */,
+			);
 			path = Notester;
 			sourceTree = "<group>";
 		};
@@ -45,6 +93,14 @@
 			path = NotesterUITests;
 			sourceTree = "<group>";
 		};
+		1D750CE92CB43D2D00CC5590 /* NotesterShareExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1D750CF32CB43D2D00CC5590 /* Exceptions for "NotesterShareExtension" folder in "NotesterShareExtension" target */,
+			);
+			path = NotesterShareExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D750D052CB4610300CC5590 /* GoogleSignIn in Frameworks */,
+				1D750D072CB4610300CC5590 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +127,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1D750CE52CB43D2D00CC5590 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +143,7 @@
 				1D750CB82CB4379600CC5590 /* Notester */,
 				1D750CCA2CB4379800CC5590 /* NotesterTests */,
 				1D750CD42CB4379800CC5590 /* NotesterUITests */,
+				1D750CE92CB43D2D00CC5590 /* NotesterShareExtension */,
 				1D750CB72CB4379600CC5590 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +154,7 @@
 				1D750CB62CB4379600CC5590 /* Notester.app */,
 				1D750CC72CB4379800CC5590 /* NotesterTests.xctest */,
 				1D750CD12CB4379800CC5590 /* NotesterUITests.xctest */,
+				1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,16 +169,20 @@
 				1D750CB22CB4379600CC5590 /* Sources */,
 				1D750CB32CB4379600CC5590 /* Frameworks */,
 				1D750CB42CB4379600CC5590 /* Resources */,
+				1D750CF72CB43D2D00CC5590 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1D750CF12CB43D2D00CC5590 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				1D750CB82CB4379600CC5590 /* Notester */,
 			);
 			name = Notester;
 			packageProductDependencies = (
+				1D750D042CB4610300CC5590 /* GoogleSignIn */,
+				1D750D062CB4610300CC5590 /* GoogleSignInSwift */,
 			);
 			productName = Notester;
 			productReference = 1D750CB62CB4379600CC5590 /* Notester.app */;
@@ -163,6 +234,28 @@
 			productReference = 1D750CD12CB4379800CC5590 /* NotesterUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		1D750CE72CB43D2D00CC5590 /* NotesterShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D750CF42CB43D2D00CC5590 /* Build configuration list for PBXNativeTarget "NotesterShareExtension" */;
+			buildPhases = (
+				1D750CE42CB43D2D00CC5590 /* Sources */,
+				1D750CE52CB43D2D00CC5590 /* Frameworks */,
+				1D750CE62CB43D2D00CC5590 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1D750CE92CB43D2D00CC5590 /* NotesterShareExtension */,
+			);
+			name = NotesterShareExtension;
+			packageProductDependencies = (
+			);
+			productName = NotesterShareExtension;
+			productReference = 1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +277,9 @@
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 1D750CB52CB4379600CC5590;
 					};
+					1D750CE72CB43D2D00CC5590 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 				};
 			};
 			buildConfigurationList = 1D750CB12CB4379600CC5590 /* Build configuration list for PBXProject "Notester" */;
@@ -195,6 +291,9 @@
 			);
 			mainGroup = 1D750CAD2CB4379600CC5590;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1D750D032CB4610300CC5590 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1D750CB72CB4379600CC5590 /* Products */;
 			projectDirPath = "";
@@ -203,6 +302,7 @@
 				1D750CB52CB4379600CC5590 /* Notester */,
 				1D750CC62CB4379800CC5590 /* NotesterTests */,
 				1D750CD02CB4379800CC5590 /* NotesterUITests */,
+				1D750CE72CB43D2D00CC5590 /* NotesterShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +323,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1D750CCF2CB4379800CC5590 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D750CE62CB43D2D00CC5590 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +360,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1D750CE42CB43D2D00CC5590 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +379,11 @@
 			isa = PBXTargetDependency;
 			target = 1D750CB52CB4379600CC5590 /* Notester */;
 			targetProxy = 1D750CD22CB4379800CC5590 /* PBXContainerItemProxy */;
+		};
+		1D750CF12CB43D2D00CC5590 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D750CE72CB43D2D00CC5590 /* NotesterShareExtension */;
+			targetProxy = 1D750CF02CB43D2D00CC5590 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -396,6 +515,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Notester/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record voice notes";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -436,6 +556,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Notester/Info.plist;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need access to your microphone to record voice notes";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -553,6 +674,63 @@
 			};
 			name = Release;
 		};
+		1D750CF52CB43D2D00CC5590 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NotesterShareExtension/NotesterShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GG8Q6AZ9Y3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotesterShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotesterShareExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mconsultants.Notester.NotesterShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1D750CF62CB43D2D00CC5590 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NotesterShareExtension/NotesterShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GG8Q6AZ9Y3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotesterShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotesterShareExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mconsultants.Notester.NotesterShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -592,7 +770,40 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		1D750CF42CB43D2D00CC5590 /* Build configuration list for PBXNativeTarget "NotesterShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D750CF52CB43D2D00CC5590 /* Debug */,
+				1D750CF62CB43D2D00CC5590 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1D750D032CB4610300CC5590 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1D750D042CB4610300CC5590 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1D750D032CB4610300CC5590 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		1D750D062CB4610300CC5590 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1D750D032CB4610300CC5590 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1D750CAE2CB4379600CC5590 /* Project object */;
 }

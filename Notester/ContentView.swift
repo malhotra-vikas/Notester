@@ -8,6 +8,8 @@ struct ContentView: View {
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
     
+    let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
+    
     var body: some View {
         VStack {
             TextField("Enter your note", text: $noteText, axis: .vertical)
@@ -41,6 +43,9 @@ struct ContentView: View {
             }
         }
         .onAppear(perform: loadNotes)
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            loadNotes()
+        }
     }
     
     func saveNote() {
@@ -52,7 +57,7 @@ struct ContentView: View {
     }
     
     func loadNotes() {
-        if let loadedNotes = UserDefaults.standard.array(forKey: "SavedNotes") as? [[String: Any]] {
+        if let loadedNotes = userDefaults?.array(forKey: "SavedNotes") as? [[String: Any]] {
             savedNotes = loadedNotes.compactMap { dict in
                 guard let content = dict["content"] as? String,
                       let isVoiceNote = dict["isVoiceNote"] as? Bool else {
@@ -69,7 +74,7 @@ struct ContentView: View {
             ["content": note.isVoiceNote ? (note.content as? URL)?.path ?? "" : (note.content as? String ?? ""),
              "isVoiceNote": note.isVoiceNote]
         }
-        UserDefaults.standard.set(notesToSave, forKey: "SavedNotes")
+        userDefaults?.set(notesToSave, forKey: "SavedNotes")
     }
     
     func toggleRecording() {
