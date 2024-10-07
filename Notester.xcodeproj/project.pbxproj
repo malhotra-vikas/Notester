@@ -10,6 +10,7 @@
 		1D750CF22CB43D2D00CC5590 /* NotesterShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1D750D052CB4610300CC5590 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D042CB4610300CC5590 /* GoogleSignIn */; };
 		1D750D072CB4610300CC5590 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D062CB4610300CC5590 /* GoogleSignInSwift */; };
+		1D750D122CB4694A00CC5590 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D112CB4694A00CC5590 /* GoogleSignIn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D750D122CB4694A00CC5590 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +146,7 @@
 				1D750CCA2CB4379800CC5590 /* NotesterTests */,
 				1D750CD42CB4379800CC5590 /* NotesterUITests */,
 				1D750CE92CB43D2D00CC5590 /* NotesterShareExtension */,
+				1D750D102CB4694A00CC5590 /* Frameworks */,
 				1D750CB72CB4379600CC5590 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -157,6 +160,13 @@
 				1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1D750D102CB4694A00CC5590 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +261,7 @@
 			);
 			name = NotesterShareExtension;
 			packageProductDependencies = (
+				1D750D112CB4694A00CC5590 /* GoogleSignIn */,
 			);
 			productName = NotesterShareExtension;
 			productReference = 1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */;
@@ -802,6 +813,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1D750D032CB4610300CC5590 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		1D750D112CB4694A00CC5590 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1D750D032CB4610300CC5590 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

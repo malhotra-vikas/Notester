@@ -1,7 +1,9 @@
 import SwiftUI
 import AVFoundation
+import GoogleSignIn
 
 struct ContentView: View {
+    @StateObject private var authManager = AuthenticationManager.shared
     @State private var noteText = ""
     @State private var savedNotes: [Note] = []
     @State private var isRecording = false
@@ -11,7 +13,49 @@ struct ContentView: View {
     let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
     
     var body: some View {
+        Group {
+            if authManager.isSignedIn {
+                mainView
+            } else {
+                signInView
+            }
+        }
+        .alert(isPresented: Binding<Bool>(
+            get: { authManager.errorMessage != nil },
+            set: { _ in authManager.errorMessage = nil }
+        )) {
+            Alert(title: Text("Error"), message: Text(authManager.errorMessage ?? "Unknown error"), dismissButton: .default(Text("OK")))
+        }
+    }
+    
+    var signInView: some View {
         VStack {
+            Text("Welcome to Notester")
+                .font(.largeTitle)
+                .padding()
+            
+            Button("Sign in with Google") {
+                authManager.signIn()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+        }
+    }
+    
+    var mainView: some View {
+        VStack {
+            HStack {
+                Text("Welcome, \(authManager.userEmail ?? "")")
+                Spacer()
+                Button("Sign Out") {
+                    authManager.signOut()
+                    savedNotes.removeAll()
+                }
+            }
+            .padding()
+            
             TextField("Enter your note", text: $noteText, axis: .vertical)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
@@ -57,7 +101,7 @@ struct ContentView: View {
     }
     
     func loadNotes() {
-        if let loadedNotes = userDefaults?.array(forKey: "SavedNotes") as? [[String: Any]] {
+        if let loadedNotes = userDefaults?.array(forKey: "SavedNotes-\(authManager.userEmail ?? "")") as? [[String: Any]] {
             savedNotes = loadedNotes.compactMap { dict in
                 guard let content = dict["content"] as? String,
                       let isVoiceNote = dict["isVoiceNote"] as? Bool else {
@@ -74,7 +118,7 @@ struct ContentView: View {
             ["content": note.isVoiceNote ? (note.content as? URL)?.path ?? "" : (note.content as? String ?? ""),
              "isVoiceNote": note.isVoiceNote]
         }
-        userDefaults?.set(notesToSave, forKey: "SavedNotes")
+        userDefaults?.set(notesToSave, forKey: "SavedNotes-\(authManager.userEmail ?? "")")
     }
     
     func toggleRecording() {

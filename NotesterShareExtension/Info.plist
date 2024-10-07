@@ -14,5 +14,14 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 	</dict>
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>com.googleusercontent.apps.65296067042-7mi6fcoch7onlalft08q01nvcs9scrdh</string>
+    </array>
+  </dict>
+</array>
 </dict>
 </plist>

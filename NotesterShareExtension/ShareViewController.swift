@@ -8,11 +8,30 @@
 import UIKit
 import Social
 import UniformTypeIdentifiers
+import GoogleSignIn
 
 class ShareViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // First, check if the user is signed in
+        if GIDSignIn.sharedInstance.hasPreviousSignIn() {
+            GIDSignIn.sharedInstance.restorePreviousSignIn { [weak self] user, error in
+                if let user = user {
+                    // User is signed in, proceed with sharing
+                    self?.handleSharedContent(for: user.profile?.email)
+                } else {
+                    // User is not signed in, we can't save the note
+                    self?.showSignInRequiredAlert()
+                }
+            }
+        } else {
+            // User has never signed in, we can't save the note
+            showSignInRequiredAlert()
+        }
+    }
+    
+    func handleSharedContent(for userEmail: String?) {
         guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
               let itemProvider = extensionItem.attachments?.first else {
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
@@ -42,7 +61,7 @@ class ShareViewController: UIViewController {
                     }
                     
                     if let text = text {
-                        self.saveNote(text)
+                        self.saveNote(text, for: userEmail)
                     }
                     
                     self.openMainApp()
@@ -59,12 +78,13 @@ class ShareViewController: UIViewController {
         return string.removingPercentEncoding ?? string
     }
     
-    func saveNote(_ text: String) {
+    func saveNote(_ text: String, for userEmail: String?) {
         let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
-        var savedNotes = userDefaults?.array(forKey: "SavedNotes") as? [[String: Any]] ?? []
+        let key = "SavedNotes-\(userEmail ?? "")"
+        var savedNotes = userDefaults?.array(forKey: key) as? [[String: Any]] ?? []
         let newNote: [String: Any] = ["content": text, "isVoiceNote": false]
         savedNotes.append(newNote)
-        userDefaults?.set(savedNotes, forKey: "SavedNotes")
+        userDefaults?.set(savedNotes, forKey: key)
     }
     
     func openMainApp() {
@@ -83,5 +103,13 @@ class ShareViewController: UIViewController {
             responder = responder?.next
         }
         return false
+    }
+    
+    func showSignInRequiredAlert() {
+        let alert = UIAlertController(title: "Sign In Required", message: "Please sign in to the Notester app before sharing notes.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        })
+        present(alert, animated: true)
     }
 }
