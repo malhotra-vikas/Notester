@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D64D74C2CB4957000953211 /* NotesterSafariExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1D64D7342CB4957000953211 /* NotesterSafariExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1D750CF22CB43D2D00CC5590 /* NotesterShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1D750D052CB4610300CC5590 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D042CB4610300CC5590 /* GoogleSignIn */; };
 		1D750D072CB4610300CC5590 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1D750D062CB4610300CC5590 /* GoogleSignInSwift */; };
@@ -14,6 +15,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1D64D74A2CB4957000953211 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1D750CAE2CB4379600CC5590 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D64D7332CB4957000953211;
+			remoteInfo = NotesterSafariExtension;
+		};
 		1D750CC82CB4379800CC5590 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1D750CAE2CB4379600CC5590 /* Project object */;
@@ -44,6 +52,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				1D64D74C2CB4957000953211 /* NotesterSafariExtension.appex in Embed Foundation Extensions */,
 				1D750CF22CB43D2D00CC5590 /* NotesterShareExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -52,6 +61,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1D64D7342CB4957000953211 /* NotesterSafariExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotesterSafariExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D750CB62CB4379600CC5590 /* Notester.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notester.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D750CC72CB4379800CC5590 /* NotesterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D750CD12CB4379800CC5590 /* NotesterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,6 +69,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1D64D7502CB4957000953211 /* Exceptions for "NotesterSafariExtension" folder in "NotesterSafariExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1D64D7332CB4957000953211 /* NotesterSafariExtension */;
+		};
 		1D750CF32CB43D2D00CC5590 /* Exceptions for "NotesterShareExtension" folder in "NotesterShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -76,6 +93,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		1D64D7352CB4957000953211 /* NotesterSafariExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1D64D7502CB4957000953211 /* Exceptions for "NotesterSafariExtension" folder in "NotesterSafariExtension" target */,
+			);
+			explicitFolders = (
+				Resources/_locales,
+				Resources/images,
+			);
+			path = NotesterSafariExtension;
+			sourceTree = "<group>";
+		};
 		1D750CB82CB4379600CC5590 /* Notester */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -105,6 +134,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1D64D7312CB4957000953211 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1D750CB32CB4379600CC5590 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,6 +182,7 @@
 				1D750CCA2CB4379800CC5590 /* NotesterTests */,
 				1D750CD42CB4379800CC5590 /* NotesterUITests */,
 				1D750CE92CB43D2D00CC5590 /* NotesterShareExtension */,
+				1D64D7352CB4957000953211 /* NotesterSafariExtension */,
 				1D750D102CB4694A00CC5590 /* Frameworks */,
 				1D750CB72CB4379600CC5590 /* Products */,
 			);
@@ -158,6 +195,7 @@
 				1D750CC72CB4379800CC5590 /* NotesterTests.xctest */,
 				1D750CD12CB4379800CC5590 /* NotesterUITests.xctest */,
 				1D750CE82CB43D2D00CC5590 /* NotesterShareExtension.appex */,
+				1D64D7342CB4957000953211 /* NotesterSafariExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,6 +210,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1D64D7332CB4957000953211 /* NotesterSafariExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D64D74D2CB4957000953211 /* Build configuration list for PBXNativeTarget "NotesterSafariExtension" */;
+			buildPhases = (
+				1D64D7302CB4957000953211 /* Sources */,
+				1D64D7312CB4957000953211 /* Frameworks */,
+				1D64D7322CB4957000953211 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1D64D7352CB4957000953211 /* NotesterSafariExtension */,
+			);
+			name = NotesterSafariExtension;
+			packageProductDependencies = (
+			);
+			productName = NotesterSafariExtension;
+			productReference = 1D64D7342CB4957000953211 /* NotesterSafariExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		1D750CB52CB4379600CC5590 /* Notester */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D750CDB2CB4379800CC5590 /* Build configuration list for PBXNativeTarget "Notester" */;
@@ -185,6 +245,7 @@
 			);
 			dependencies = (
 				1D750CF12CB43D2D00CC5590 /* PBXTargetDependency */,
+				1D64D74B2CB4957000953211 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				1D750CB82CB4379600CC5590 /* Notester */,
@@ -277,6 +338,9 @@
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
+					1D64D7332CB4957000953211 = {
+						CreatedOnToolsVersion = 16.0;
+					};
 					1D750CB52CB4379600CC5590 = {
 						CreatedOnToolsVersion = 16.0;
 					};
@@ -314,11 +378,19 @@
 				1D750CC62CB4379800CC5590 /* NotesterTests */,
 				1D750CD02CB4379800CC5590 /* NotesterUITests */,
 				1D750CE72CB43D2D00CC5590 /* NotesterShareExtension */,
+				1D64D7332CB4957000953211 /* NotesterSafariExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1D64D7322CB4957000953211 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1D750CB42CB4379600CC5590 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -350,6 +422,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1D64D7302CB4957000953211 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1D750CB22CB4379600CC5590 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -381,6 +460,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1D64D74B2CB4957000953211 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D64D7332CB4957000953211 /* NotesterSafariExtension */;
+			targetProxy = 1D64D74A2CB4957000953211 /* PBXContainerItemProxy */;
+		};
 		1D750CC92CB4379800CC5590 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1D750CB52CB4379600CC5590 /* Notester */;
@@ -399,6 +483,69 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1D64D74E2CB4957000953211 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GG8Q6AZ9Y3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotesterSafariExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotesterSafariExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mconsultants.Notester.NotesterSafariExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1D64D74F2CB4957000953211 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GG8Q6AZ9Y3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = NotesterSafariExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = NotesterSafariExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mconsultants.Notester.NotesterSafariExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		1D750CD92CB4379800CC5590 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -745,6 +892,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1D64D74D2CB4957000953211 /* Build configuration list for PBXNativeTarget "NotesterSafariExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D64D74E2CB4957000953211 /* Debug */,
+				1D64D74F2CB4957000953211 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1D750CB12CB4379600CC5590 /* Build configuration list for PBXProject "Notester" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

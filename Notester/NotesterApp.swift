@@ -12,6 +12,7 @@ import os
 @main
 struct NotesterApp: App {
     @StateObject private var authManager = AuthenticationManager.shared
+    @State private var shouldRefresh = false
 
     init() {
         print("NotesterApp initializing...")
@@ -20,13 +21,17 @@ struct NotesterApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(shouldRefresh: $shouldRefresh)
                 .onAppear {
                     print("ContentView appeared")
                 }
                 .onOpenURL { url in
                     print("Handling URL: \(url)")
-                    GIDSignIn.sharedInstance.handle(url)
+                    if url.scheme == "notester" && url.host == "refresh" {
+                        shouldRefresh = true
+                    } else {
+                        GIDSignIn.sharedInstance.handle(url)
+                    }
                 }
                 .environmentObject(authManager)
         }

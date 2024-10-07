@@ -9,6 +9,8 @@ struct ContentView: View {
     @State private var isRecording = false
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
+    @Binding var shouldRefresh: Bool
+    @State private var showVerificationAlert = false
     
     let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
     
@@ -25,6 +27,15 @@ struct ContentView: View {
             set: { _ in authManager.errorMessage = nil }
         )) {
             Alert(title: Text("Error"), message: Text(authManager.errorMessage ?? "Unknown error"), dismissButton: .default(Text("OK")))
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            checkForNewNotes()
+        }
+        .onChange(of: shouldRefresh) { newValue in
+            if newValue {
+                loadNotes()
+                shouldRefresh = false
+            }
         }
     }
     
@@ -69,6 +80,11 @@ struct ContentView: View {
                     Text(isRecording ? "Stop Recording" : "Start Recording")
                 }
                 .foregroundColor(isRecording ? .red : .blue)
+                
+                Button(action: verifyNote) {
+                    Text("Verify")
+                }
+                .foregroundColor(.green)
             }
             .padding()
             
@@ -89,6 +105,9 @@ struct ContentView: View {
         .onAppear(perform: loadNotes)
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
             loadNotes()
+        }
+        .alert(isPresented: $showVerificationAlert) {
+            Alert(title: Text("Verification"), message: Text("Your note has been verified!"), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -172,6 +191,21 @@ struct ContentView: View {
             print("Failed to play voice note: \(error.localizedDescription)")
         }
     }
+    
+    func checkForNewNotes() {
+        if authManager.isSignedIn {
+            if userDefaults?.bool(forKey: "NewNoteAdded") == true {
+                loadNotes()
+                userDefaults?.set(false, forKey: "NewNoteAdded")
+            }
+        }
+    }
+    
+    func verifyNote() {
+        // This is a placeholder function. You can implement actual verification logic here.
+        print("Verifying note: \(noteText)")
+        showVerificationAlert = true
+    }
 }
 
 struct Note: Identifiable {
@@ -180,6 +214,8 @@ struct Note: Identifiable {
     let isVoiceNote: Bool
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView(shouldRefresh: .constant(false))
+    }
 }

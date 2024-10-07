@@ -32,5 +32,9 @@
 	<string>MainInterface</string>
 	<key>NSExtensionPointIdentifier</key>
 	<string>com.apple.share-services</string>
+<key>com.apple.security.application-groups</key>
+<array>
+    <string>group.com.mconsultants.Notester</string>
+</array>
 </dict>
 </plist>
