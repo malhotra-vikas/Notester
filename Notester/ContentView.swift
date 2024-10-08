@@ -11,9 +11,13 @@ struct ContentView: View {
     @State private var audioPlayer: AVAudioPlayer?
     @Binding var shouldRefresh: Bool
     @State private var showVerificationAlert = false
-    
+    @State private var isVerifying = false
+    @State private var verificationMessage = ""
+    @State private var showingVeraView = false
+    @State private var verificationURL: String = ""
+
     let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
-    
+
     var body: some View {
         Group {
             if authManager.isSignedIn {
@@ -36,6 +40,9 @@ struct ContentView: View {
                 loadNotes()
                 shouldRefresh = false
             }
+        }
+        .sheet(isPresented: $showingVeraView) {
+            VeraView(url: verificationURL, emailLoggedIn: authManager.userEmail ?? "Not signed in")
         }
     }
     
@@ -81,12 +88,20 @@ struct ContentView: View {
                 }
                 .foregroundColor(isRecording ? .red : .blue)
                 
-                Button(action: verifyNote) {
+                Button(action: {
+                    verifyNote()
+                    showingVeraView = true
+                }) {
                     Text("Verify")
                 }
                 .foregroundColor(.green)
+                .disabled(isVerifying)
             }
             .padding()
+            
+            if isVerifying {
+                ProgressView("Verifying...")
+            }
             
             List(savedNotes) { note in
                 if note.isVoiceNote {
@@ -107,7 +122,7 @@ struct ContentView: View {
             loadNotes()
         }
         .alert(isPresented: $showVerificationAlert) {
-            Alert(title: Text("Verification"), message: Text("Your note has been verified!"), dismissButton: .default(Text("OK")))
+            Alert(title: Text("Verification"), message: Text(verificationMessage), dismissButton: .default(Text("OK")))
         }
     }
     
@@ -202,9 +217,118 @@ struct ContentView: View {
     }
     
     func verifyNote() {
-        // This is a placeholder function. You can implement actual verification logic here.
-        print("Verifying note: \(noteText)")
-        showVerificationAlert = true
+        guard let email = authManager.userEmail else {
+            showVerificationAlert = true
+            verificationMessage = "No user email found. Please sign in again."
+            return
+        }
+
+        isVerifying = true
+        verificationURL = "https://q6bi91a3x8.execute-api.us-east-2.amazonaws.com/default/StoreVeraUsers?email=\(email)"
+        
+        URLSession.shared.dataTask(with: URL(string: verificationURL)!) { data, response, error in
+            DispatchQueue.main.async {
+                self.isVerifying = false
+                if let error = error {
+                    self.showVerificationAlert = true
+                    self.verificationMessage = "Error: \(error.localizedDescription)"
+                } else if let data = data {
+                    if let result = String(data: data, encoding: .utf8) {
+                        if result.contains("User not found") {
+                            self.createNewUser(email: email)
+                        } else {
+                            self.showingVeraView = true
+                        }
+                    } else {
+                        self.showVerificationAlert = true
+                        self.verificationMessage = "Unable to parse API response"
+                    }
+                }
+            }
+        }.resume()
+    }
+
+    func createNewUser(email: String) {
+        let apiGatewayUrl = "https://q6bi91a3x8.execute-api.us-east-2.amazonaws.com/default/StoreVeraUsers"
+        guard let url = URL(string: apiGatewayUrl) else {
+            showVerificationAlert = true
+            verificationMessage = "Invalid URL for user creation"
+            return
+        }
+
+        let trialCredits = "5"
+        let userData = [
+            "email": email,
+            "timestamp": ISO8601DateFormatter().string(from: Date()),
+            "subscription_status": "New User",
+            "credits": trialCredits
+        ]
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: userData)
+        } catch {
+            showVerificationAlert = true
+            verificationMessage = "Error creating user data: \(error.localizedDescription)"
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self.showVerificationAlert = true
+                    self.verificationMessage = "Error creating user: \(error.localizedDescription)"
+                } else if let data = data {
+                    if let result = String(data: data, encoding: .utf8) {
+                        self.showVerificationAlert = true
+                        self.verificationMessage = "New user created: \(result)"
+                        
+                        // Send new-user notification
+                        self.sendNotification(notificationType: "new-user", email: email)
+                    } else {
+                        self.showVerificationAlert = true
+                        self.verificationMessage = "Unable to parse user creation response"
+                    }
+                }
+            }
+        }.resume()
+    }
+
+    func sendNotification(notificationType: String, email: String) {
+        let url = URL(string: "https://q6bi91a3x8.execute-api.us-east-2.amazonaws.com/default/NotificationQueueAppender")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        var payload: [String: Any] = [
+            "notificationType": notificationType,
+            "email": email
+        ]
+
+        if notificationType == "trial-expired-2-day-reminder" {
+            let twoDaysFromNow = Calendar.current.date(byAdding: .day, value: 2, to: Date())!
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            payload["delayDate"] = dateFormatter.string(from: twoDaysFromNow)
+        }
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+        } catch {
+            print("Error creating notification payload: \(error.localizedDescription)")
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error sending notification: \(error.localizedDescription)")
+            } else {
+                print("Notification sent successfully (no-cors mode, response cannot be read).")
+            }
+        }.resume()
     }
 }
 
