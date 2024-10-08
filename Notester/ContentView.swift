@@ -65,9 +65,17 @@ struct ContentView: View {
             }
             .padding()
             
-            TextField("Enter your note", text: $noteText, axis: .vertical)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            HStack {
+                TextField("Enter your note", text: $noteText, axis: .vertical)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                Button(action: clearNoteText) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.gray)
+                }
+                .disabled(noteText.isEmpty)
+            }
+            .padding()
             
             HStack {
                 Button(action: saveNote) {
@@ -93,7 +101,7 @@ struct ContentView: View {
             
             List {
                 ForEach(savedNotes) { note in
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 5) {
                         if note.isVoiceNote {
                             Button(action: {
                                 if let url = note.content as? URL {
@@ -105,8 +113,8 @@ struct ContentView: View {
                         } else {
                             Text(decodeURLString(note.content as? String ?? ""))
                         }
-                        if let sourceURL = note.sourceURL {
-                            Text(sourceURL)
+                        if let sourceURL = note.sourceURL, let url = URL(string: sourceURL) {
+                            Link("Source", destination: url)
                                 .font(.caption)
                                 .foregroundColor(.blue)
                         }
@@ -286,6 +294,10 @@ struct ContentView: View {
             noteText = content
             verifyNote()
         }
+    }
+    
+    func clearNoteText() {
+        noteText = ""
     }
 }
 
