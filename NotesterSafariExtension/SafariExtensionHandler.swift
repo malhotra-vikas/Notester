@@ -9,8 +9,9 @@ class NotesterSafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
         if let message = message as? [String: Any],
            let messageName = message["name"] as? String,
            messageName == "selectedText",
-           let text = message["text"] as? String {
-            saveNote(text)
+           let text = message["text"] as? String,
+           let sourceURL = message["sourceURL"] as? String {
+            saveNote(text, sourceURL: sourceURL)
             response.userInfo = [ SFExtensionMessageKey: [ "response": "Note saved" ] ]
         } else {
             response.userInfo = [ SFExtensionMessageKey: [ "response": "Invalid message" ] ]
@@ -19,12 +20,12 @@ class NotesterSafariWebExtensionHandler: NSObject, NSExtensionRequestHandling {
         context.completeRequest(returningItems: [response], completionHandler: nil)
     }
     
-    func saveNote(_ text: String) {
+    func saveNote(_ text: String, sourceURL: String) {
         let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
         if let userEmail = userDefaults?.string(forKey: "UserEmail") {
             let key = "SavedNotes-\(userEmail)"
             var savedNotes = userDefaults?.array(forKey: key) as? [[String: Any]] ?? []
-            let newNote: [String: Any] = ["content": text, "isVoiceNote": false]
+            let newNote: [String: Any] = ["content": text, "isVoiceNote": false, "sourceURL": sourceURL]
             savedNotes.append(newNote)
             userDefaults?.set(savedNotes, forKey: key)
             

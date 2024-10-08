@@ -5,7 +5,8 @@ function handleContextMenu(event) {
     if (selectedText) {
         browser.runtime.sendMessage({
             name: "selectedText",
-            text: selectedText
+            text: selectedText,
+            sourceURL: window.location.href
         });
     }
 }

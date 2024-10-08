@@ -24,10 +24,19 @@ struct VeraView: View {
                 .background(Color.blue)
                 
                 // URL and Login
-                Text(url)
-                    .font(.headline)
+                if let url = URL(string: url) {
+                    Link(destination: url) {
+                        Text(url.absoluteString)
+                            .font(.headline)
+                            .foregroundColor(.blue)
+                            .underline()
+                    }
+                } else {
+                    Text(url)
+                        .font(.headline)
+                }
                 
-                //Text("Logged in as: \(emailLoggedIn)")
+                Text("Logged in as: \(emailLoggedIn)")
                 
                 // Loading Screen
                 if isLoading {

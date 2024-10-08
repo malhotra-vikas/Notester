@@ -9,15 +9,15 @@ struct ContentView: View {
     @State private var isRecording = false
     @State private var audioRecorder: AVAudioRecorder?
     @State private var audioPlayer: AVAudioPlayer?
-    @Binding var shouldRefresh: Bool
-    @State private var showVerificationAlert = false
-    @State private var isVerifying = false
-    @State private var verificationMessage = ""
     @State private var showingVeraView = false
-    @State private var verificationURL: String = ""
-
+    @State private var isVerifying = false
+    @State private var showVerificationAlert = false
+    @State private var verificationMessage = ""
+    @State private var verificationURL = ""
+    @Binding var shouldRefresh: Bool
+    
     let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
-
+    
     var body: some View {
         Group {
             if authManager.isSignedIn {
@@ -32,17 +32,8 @@ struct ContentView: View {
         )) {
             Alert(title: Text("Error"), message: Text(authManager.errorMessage ?? "Unknown error"), dismissButton: .default(Text("OK")))
         }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            checkForNewNotes()
-        }
-        .onChange(of: shouldRefresh) { newValue in
-            if newValue {
-                loadNotes()
-                shouldRefresh = false
-            }
-        }
         .sheet(isPresented: $showingVeraView) {
-            VeraView(url: verificationURL, emailLoggedIn: authManager.userEmail ?? "Not signed in")
+            VeraView(url: verificationURL, emailLoggedIn: authManager.userEmail ?? "")
         }
     }
     
@@ -88,10 +79,7 @@ struct ContentView: View {
                 }
                 .foregroundColor(isRecording ? .red : .blue)
                 
-                Button(action: {
-                    verifyNote()
-                    showingVeraView = true
-                }) {
+                Button(action: verifyNote) {
                     Text("Verify")
                 }
                 .foregroundColor(.green)
@@ -103,17 +91,41 @@ struct ContentView: View {
                 ProgressView("Verifying...")
             }
             
-            List(savedNotes) { note in
-                if note.isVoiceNote {
-                    Button(action: {
-                        if let url = note.content as? URL {
-                            playVoiceNote(url: url)
+            List {
+                ForEach(savedNotes) { note in
+                    VStack(alignment: .leading) {
+                        if note.isVoiceNote {
+                            Button(action: {
+                                if let url = note.content as? URL {
+                                    playVoiceNote(url: url)
+                                }
+                            }) {
+                                Text("Voice Note: \((note.content as? URL)?.lastPathComponent ?? "")")
+                            }
+                        } else {
+                            Text(decodeURLString(note.content as? String ?? ""))
                         }
-                    }) {
-                        Text("Voice Note: \((note.content as? URL)?.lastPathComponent ?? "")")
+                        if let sourceURL = note.sourceURL {
+                            Text(sourceURL)
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                        }
                     }
-                } else {
-                    Text(note.content as? String ?? "")
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            deleteNote(note)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            verifyNote(note)
+                        } label: {
+                            Label("Verify", systemImage: "checkmark.seal")
+                        }
+                        .tint(.green)
+                    }
                 }
             }
         }
@@ -128,7 +140,7 @@ struct ContentView: View {
     
     func saveNote() {
         if !noteText.isEmpty {
-            savedNotes.append(Note(content: noteText, isVoiceNote: false))
+            savedNotes.append(Note(content: noteText, isVoiceNote: false, sourceURL: nil))
             noteText = ""
             saveNotesToUserDefaults()
         }
@@ -141,8 +153,10 @@ struct ContentView: View {
                       let isVoiceNote = dict["isVoiceNote"] as? Bool else {
                     return nil
                 }
+                let sourceURL = dict["sourceURL"] as? String
                 return Note(content: isVoiceNote ? URL(fileURLWithPath: content) : content,
-                            isVoiceNote: isVoiceNote)
+                            isVoiceNote: isVoiceNote,
+                            sourceURL: sourceURL)
             }
         }
     }
@@ -150,7 +164,8 @@ struct ContentView: View {
     func saveNotesToUserDefaults() {
         let notesToSave = savedNotes.map { note -> [String: Any] in
             ["content": note.isVoiceNote ? (note.content as? URL)?.path ?? "" : (note.content as? String ?? ""),
-             "isVoiceNote": note.isVoiceNote]
+             "isVoiceNote": note.isVoiceNote,
+             "sourceURL": note.sourceURL ?? ""]
         }
         userDefaults?.set(notesToSave, forKey: "SavedNotes-\(authManager.userEmail ?? "")")
     }
@@ -193,7 +208,7 @@ struct ContentView: View {
         isRecording = false
         
         if let recorder = audioRecorder {
-            savedNotes.append(Note(content: recorder.url, isVoiceNote: true))
+            savedNotes.append(Note(content: recorder.url, isVoiceNote: true, sourceURL: nil))
             saveNotesToUserDefaults()
         }
     }
@@ -207,13 +222,8 @@ struct ContentView: View {
         }
     }
     
-    func checkForNewNotes() {
-        if authManager.isSignedIn {
-            if userDefaults?.bool(forKey: "NewNoteAdded") == true {
-                loadNotes()
-                userDefaults?.set(false, forKey: "NewNoteAdded")
-            }
-        }
+    func decodeURLString(_ string: String) -> String {
+        return string.removingPercentEncoding ?? string
     }
     
     func verifyNote() {
@@ -247,88 +257,35 @@ struct ContentView: View {
             }
         }.resume()
     }
-
+    
     func createNewUser(email: String) {
-        let apiGatewayUrl = "https://q6bi91a3x8.execute-api.us-east-2.amazonaws.com/default/StoreVeraUsers"
-        guard let url = URL(string: apiGatewayUrl) else {
-            showVerificationAlert = true
-            verificationMessage = "Invalid URL for user creation"
-            return
-        }
-
-        let trialCredits = "5"
-        let userData = [
-            "email": email,
-            "timestamp": ISO8601DateFormatter().string(from: Date()),
-            "subscription_status": "New User",
-            "credits": trialCredits
-        ]
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: userData)
-        } catch {
-            showVerificationAlert = true
-            verificationMessage = "Error creating user data: \(error.localizedDescription)"
-            return
-        }
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.showVerificationAlert = true
-                    self.verificationMessage = "Error creating user: \(error.localizedDescription)"
-                } else if let data = data {
-                    if let result = String(data: data, encoding: .utf8) {
-                        self.showVerificationAlert = true
-                        self.verificationMessage = "New user created: \(result)"
-                        
-                        // Send new-user notification
-                        self.sendNotification(notificationType: "new-user", email: email)
-                    } else {
-                        self.showVerificationAlert = true
-                        self.verificationMessage = "Unable to parse user creation response"
-                    }
-                }
-            }
-        }.resume()
+        // Implement user creation logic here
+        // For now, we'll just show an alert
+        showVerificationAlert = true
+        verificationMessage = "New user creation not implemented yet."
     }
-
-    func sendNotification(notificationType: String, email: String) {
-        let url = URL(string: "https://q6bi91a3x8.execute-api.us-east-2.amazonaws.com/default/NotificationQueueAppender")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        var payload: [String: Any] = [
-            "notificationType": notificationType,
-            "email": email
-        ]
-
-        if notificationType == "trial-expired-2-day-reminder" {
-            let twoDaysFromNow = Calendar.current.date(byAdding: .day, value: 2, to: Date())!
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            payload["delayDate"] = dateFormatter.string(from: twoDaysFromNow)
-        }
-
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: payload)
-        } catch {
-            print("Error creating notification payload: \(error.localizedDescription)")
-            return
-        }
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error sending notification: \(error.localizedDescription)")
-            } else {
-                print("Notification sent successfully (no-cors mode, response cannot be read).")
+    
+    func checkForNewNotes() {
+        if authManager.isSignedIn {
+            if userDefaults?.bool(forKey: "NewNoteAdded") == true {
+                loadNotes()
+                userDefaults?.set(false, forKey: "NewNoteAdded")
             }
-        }.resume()
+        }
+    }
+    
+    func deleteNote(_ note: Note) {
+        if let index = savedNotes.firstIndex(where: { $0.id == note.id }) {
+            savedNotes.remove(at: index)
+            saveNotesToUserDefaults()
+        }
+    }
+    
+    func verifyNote(_ note: Note) {
+        if let content = note.content as? String {
+            noteText = content
+            verifyNote()
+        }
     }
 }
 
@@ -336,6 +293,7 @@ struct Note: Identifiable {
     let id = UUID()
     let content: Any
     let isVoiceNote: Bool
+    let sourceURL: String?
 }
 
 struct ContentView_Previews: PreviewProvider {

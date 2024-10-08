@@ -44,17 +44,20 @@ class ShareViewController: UIViewController {
                     }
                     
                     var text: String?
+                    var sourceURL: String?
                     
-                    if let urlString = item as? String {
+                    if let urlString = item as? String, let url = URL(string: urlString) {
                         text = self.decodeURLString(urlString)
+                        sourceURL = url.absoluteString
                     } else if let url = item as? URL {
                         text = self.decodeURLString(url.absoluteString)
+                        sourceURL = url.absoluteString
                     } else if let string = item as? String {
                         text = self.decodeURLString(string)
                     }
                     
                     if let text = text {
-                        self.saveNote(text, for: userEmail)
+                        self.saveNote(text, sourceURL: sourceURL, for: userEmail)
                     }
                     
                     self.openMainApp()
@@ -67,17 +70,20 @@ class ShareViewController: UIViewController {
         self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
     
-    func decodeURLString(_ string: String) -> String {
-        return string.removingPercentEncoding ?? string
-    }
-    
-    func saveNote(_ text: String, for userEmail: String) {
+    func saveNote(_ text: String, sourceURL: String?, for userEmail: String) {
         let userDefaults = UserDefaults(suiteName: "group.com.mconsultants.Notester")
-        let key = "SavedNotes-\(userEmail ?? "")"
+        let key = "SavedNotes-\(userEmail)"
         var savedNotes = userDefaults?.array(forKey: key) as? [[String: Any]] ?? []
-        let newNote: [String: Any] = ["content": text, "isVoiceNote": false]
+        var newNote: [String: Any] = ["content": text, "isVoiceNote": false]
+        if let sourceURL = sourceURL {
+            newNote["sourceURL"] = sourceURL
+        }
         savedNotes.append(newNote)
         userDefaults?.set(savedNotes, forKey: key)
+    }
+    
+    func decodeURLString(_ string: String) -> String {
+        return string.removingPercentEncoding ?? string
     }
     
     func openMainApp() {
